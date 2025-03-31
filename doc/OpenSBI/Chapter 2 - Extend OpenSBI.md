@@ -9,7 +9,7 @@ Minimum requriements are expressed in the [offical opensbi documentation](https:
 - The MTVEC CSR on all HARTs must support direct mode
 	- Accorting to RISC-V instruction set manual - Privileged mode "*The `mtvec` register is an MXLEN-bit **WARL** read/write register that holds trap vector configuration, consisting of a vector base address (BASE) and a vector mode (MODE)*"
 	  This register allows two modes for handling trap exceptions, depending on the value of MODE:
-	  ![[Pasted image 20250331144248.png]]
+	  []()
 	  (*MODE configuration Table*)
 		- in Direct mode (Value = `0`) the trap exception jumps to the value at BASE. The BASE address acts like an ISR.
 		- in Vectored mode (Value = `1`), the BASE address is the first element of a vector of addresses in memory, at which the trap exception jumps based on the identifier of its cause. 
