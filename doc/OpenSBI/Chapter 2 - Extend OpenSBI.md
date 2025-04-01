@@ -1,8 +1,7 @@
-## Part 1. Minimum Requirements (task [450](https://raspynet.ddns.net/issues/450))
+## Part 1. Minimum Requirements
 Minimum requriements are expressed in the [offical opensbi documentation](https://github.com/riscv-software-src/opensbi/blob/master/docs/platform_requirements.md), which i leave here as a reference since it is constantly updated. Here's a detailed list of what is needed by the RISC-V implementation to support the opensbi implementation.
 - *At least rv32ima_zicsr or rv64ima_zicsr required on all HARTs*
 	- The Integer, Multiply and Atomic standard ISA extensions are required, as well as the *ZICSR* ISA extension in order to operate on control and status registers of each hard. This is for both 32 and 64-bit ISAs.
-		- {(optional) why is that needed?}
 - *At least one HART should have S-mode support because:*
 	- *SBI calls are meant for RISC-V S-mode (Supervisor mode)*
 	- *OpenSBI implements SBI calls for S-mode software*
