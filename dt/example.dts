@@ -1,0 +1,89 @@
+// all names are compliant with 2.2.2. Generic Names Recommendation
+
+/dts-v1/;
+
+/ {
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        cpu@0{
+            device_type = "cpu";
+            reg = <0x0>;
+            compatible = "CV32E40P,riscv";
+        };
+    };
+
+    memory@00000000{
+        device_type = "memory";
+        reg = <0x00000000 0x0001FFFF>;
+    };
+
+    uart@20000{
+        compatible = "uninasoc-uart";
+        reg = <0x20000 0xF>;
+    };
+
+    //potrebbe andare sotto gpio controller?
+    //a che serve mettere la chiocciola? per indicare univocamente il dispositivo all'interno del bus
+    gpio@20200{
+        compatible = "uiniasoc-gpio-in";
+        reg = <0x20200 0x1FF>;
+    };
+
+    gpio@20400{
+        compatible = "uiniasoc-gpio-out";
+        reg = <0x20400 0x1FF>;
+    };
+
+    timer@20600{
+        compatible = "uinasoc-timer"; //andrebbe messo un altro campo ,vendor nel caso in cui il timer
+                                      //abbia un version number
+        reg = <0x20600 0x1F>;
+    };
+
+    timer@20620{
+        compatible = "uinasoc-timer"; //andrebbe messo un altro campo ,vendor nel caso in cui il timer
+                                      //abbia un version number
+        reg = <0x20620 0x1F>;
+    };
+
+    //section related to domain specification
+    chosen{
+        opensbi-domains {
+            //define a domain configuration
+            compatible = "opensbi,domain,config";
+            //define all the peripherals above as domain memory regions (see opensbi domain specification)
+            dmem: dmem{
+                compatible = "opensbi,domain,memregion";
+            };
+
+            duart: duart{
+                compatible = "opensbi,domain,memregion";
+            };
+
+            dgpio: dgpio{
+                compatible = "opensbi,domain,memregion";
+            };
+
+            dgpio: dgpio{
+                compatible = "opensbi,domain,memregion";
+            };
+
+            dtimer: dtimer {
+                compatible = "opensbi,domain,memregion";
+            };
+
+            dtimer: dtimer {
+                compatible = "opensbi,domain,memregion";
+            };
+
+            //define the actual domain instance
+            tdomain: trusted-domain {
+                compatible = "opensbi,domain,instance";
+            };
+
+            /*TODO: compilare i restanti campi*/
+        };
+    };
+};
