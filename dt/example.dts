@@ -24,15 +24,18 @@
         reg = <0x20000 0xF>;
     };
 
-    //potrebbe andare sotto gpio controller?
-    gpio@20200{
-        compatible = "uiniasoc-gpio-in";
+    gpio_in: gpio@20200{
+        compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
+        gpio-controller;
         reg = <0x20200 0x1FF>;
     };
 
-    gpio@20400{
-        compatible = "uiniasoc-gpio-out";
+    gpio_out: gpio@20400{
+        #gpio-cells=<2>; //TODO: capire come configurare
+        compatible = "xlnx,axi-gpio-2.0", "xlnx,xps-gpio-1.00.a";
         reg = <0x20400 0x1FF>;
+        gpio-controller;
+        ngpios = <32>;
     };
 
     timer@20600{
