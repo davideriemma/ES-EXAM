@@ -1,20 +1,12 @@
-#define OPENSBI_DRAM_ADDR 0x80000000
-#define OPENSBI_ROM_ADDR  0x01000000
-
-extern unsigned opensbi_fw_size;
-
-void memcpy(void* src, void* dest, unsigned count)
-{
-    while (--count)
-    {
-        *((char *)(dest + count)) = *((char*)(src + count));
-    }
-    
-}
+#include "ns16550a.h"
 
 void bootrom_init()
 {
-    //copy opensbi to RAM
-    memcpy((void *)(OPENSBI_DRAM_ADDR), (void *)(OPENSBI_ROM_ADDR), opensbi_fw_size);
-    //jump to opensbi_init address
+    ns16550a_init();
+    ns16550a_print("==========================\r\n");
+    ns16550a_print("UninaSoC BootRom v0.1\r\n");
+    ns16550a_print("==========================\r\n");
+
+    //while(1) is in place to the call to opensbi
+    while(1);
 }

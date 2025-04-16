@@ -1,8 +1,9 @@
-.section .text.bootrom
-
+.section .text.bios
 .global _start
-.global __stack_head
+.global __estack_head
+
 _start:
-  ## 1. init the stack pointer, so that i can call the memmove function
-  la sp, __stack_head # sp = __stack_head
-  #j bootrom_init      # jump to target
+    la sp, __estack_head # sp = __estack_head
+    jal bootrom_init  # jump to bootrom_init and save position to ra
+    
+    

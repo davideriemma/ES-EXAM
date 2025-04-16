@@ -1,12 +1,12 @@
 MEMORY {
-  dram_space (rwx) : ORIGIN = 0x80000000, LENGTH = 0x8000000
+  dram_space (rwx) : ORIGIN = 0x80000000, LENGTH = 1024
 }
 
 SECTIONS {
   .text : {
-    bootrom.o(.text.bios)
+    asm.o(.text.bios)
+    *(.text)
   } > dram_space
 }
 
-__stack_head = 0x88000000;
-opensbi_fw_size = 0x0012;
+__estack_head = 0x80000400;
