@@ -1,0 +1,101 @@
+//uninasoc untrusted domain (udom) v. 0.1
+//author: Davide Riemma (da.riemma@studenti.unina.it)
+
+/dts-v1/;
+
+/{
+    chosen{
+        /*All OpenSBI domain description related DT nodes should be under 
+        the domain confguration DT node. The /chosen DT node is the preferred parent 
+        of the domain confguration DT node. The DT properties of a domain confguration 
+        DT node are as follows:
+            - compatible (Mandatory) - The compatible string of the domain confguration. 
+              This DT property should have value "opensbi,domain,confg"*/
+        opensbi-domains{
+            compatible = "opensbi,domain,config";
+
+            /*The domain memory region DT node describes details of a memory region 
+            and can be pointed by multiple domain instance DT nodes. 
+            The access permissions of the memory region are specifed separately 
+            in domain instance node.
+            The DT properties of a domain memory region DT node are as follows:
+              - compatible (Mandatory) - The compatible string of the domain memory region. 
+              This DT property should have value "opensbi,domain,memregion"
+              - base (Mandatory) - The base address of the domain memory region. 
+              This DT property should have a 2 ∧ order aligned 64 bit address 
+              (i.e. two DT cells).
+              - order (Mandatory) - The order of the domain memory region. 
+              This DT property should have a 32 bit value (i.e. one DT cell) 
+              in the range 3 <= order <= __riscv_xlen.
+              - mmio (Optional) - A boolean fag representing whether the domain memory region 
+              is a memory-mapped I/O (MMIO) region.
+              - devices (Optional) - The list of device DT node phandles for devices 
+              which fall under this domain memory region.*/
+            
+            //define memregion for the dram
+            dram: dram{
+                compatible = "opensbi,domain,memregion"; 
+                order = <16>;
+                base = <0x0 0x030000>;
+            };
+
+            //define memregion for uart. Note: device phandles to dt nodes that
+            //define the pheripheral are not included but can be added once this dt is 
+            //configured for usage under a linux SEE.
+            uart: uart{
+                compatible = "opensbi,domain,memregion";
+                order = <4>;
+                base  = <0x0 0x20000>;
+                mmio = <1>;
+            };
+
+            //define the memregion for timer0. Note: device phandles to dt nodes that
+            //define the pheripheral are not included but can be added once this dt is 
+            //configured for usage under a linux SEE.
+            timer0: timer{
+                compatible = "opensbi,domain,memregion";
+                order = <5>;
+                base = <0x0 0x20020>;
+                mmio = <1>;
+            };
+
+            //define the memregion for timer0. Note: device phandles to dt nodes that
+            //define the pheripheral are not included but can be added once this dt is 
+            //configured for usage under a linux SEE.
+            timer1: timer{
+                compatible = "opensbi,domain,memregion";
+                order = <5>;
+                base = <0x0 0x20040>;
+                mmio = <1>;
+            };
+
+            udom: unstrusted-domain{
+                compatible = "opensbi,domain,instance";
+                possible-harts = <&cpu0>;
+                boot-hart = <&cpu0>;
+                //TODO: next-* will be filled when the payload loading mechanism is clear
+                //next-arg1:
+                //next-addr:
+                //next-mode:
+                system-reset-allowed = <1>;
+                system-suspend-allowed = <1>;
+            };
+        };
+    };
+
+    cpus  {
+        #address-cells = <1>;
+        #size-cells = <0>;
+        //as agreed in the email"report ES del 07-04-2025" of 08/04/2025 13:47 CEST
+        timebase-frequency = <20000000>;
+
+        //only the strict necessary is defined here. Further details can be added as required
+        //by the desired level of integration of the device tree in the SEE.
+        cpu0: cpu@0{
+            device_type = "cpu";
+            reg = <0x0>;
+            compatible = "riscv";
+            opensbi-domain = <&udom>;
+        };
+    };
+};
