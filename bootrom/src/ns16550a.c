@@ -7,7 +7,7 @@ void ns16550a_init()
 }
 
 /*\brief write a single char to ns16550a*/
-void ns16550a_tx(uint8_t ch)
+void ns16550a_tx(unsigned char ch)
 {
     *(NS16550A_TX_REG) = ch;
 }

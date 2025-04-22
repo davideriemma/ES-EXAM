@@ -4,3 +4,5 @@ studies/
 *.dtb
 *.o
 *.elf
+*.vscode
+*.bin
